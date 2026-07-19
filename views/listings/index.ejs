@@ -1,0 +1,10 @@
+<% layout('layouts/boilerplate') %>
+<body>
+    <ul class="list-group">
+        <% for(const listing of listings) { %>
+            <li class="list-group-item">
+                <a href="/listings/<%= listing._id %>"><%= listing.title %></a>
+            </li>
+        <% } %>
+    </ul>
+</body>
