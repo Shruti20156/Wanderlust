@@ -1,22 +1,42 @@
 <% layout('layouts/boilerplate') %>
 <body>
-    <h4>Create a New Listing</h4>
-    <form action="/listings" method="POST">
-        <label for="title">Title:</label>
-        <input type="text" name="title" id="title" required><br>
+   
+    <div class="row">
+        <div class="col-8 offset-2">
 
-        <label for="description">Description:</label>
-        <textarea name="description" id="description" required></textarea><br>
-
-        <label for="price">Price:</label>
-        <input type="number" name="price" id="price" required><br>
-
-        <label for="location">Location:</label>
-        <input type="text" name="location" id="location" required><br>
-
-        <label for="country">Country:</label>
-        <input type="text" name="country" id="country" required><br>
-
-        <button type="submit">Create Listing</button>
+      
+    <form action="/listings" method="POST" novalidate class="needs-validation">
+         <h4>Create a New Listing</h4>
+        <div>
+        <label for="title" class="form-label">Title:</label>
+        <input type="text" name="title" id="title" class="form-control" required><br>
+        <div>
+        <label for="description" class="form-label">Description:</label>
+        <textarea name="description" id="description" class="form-control" required></textarea><br>
+        </div>
+        <div>
+            <label for="image" class="form-label">Image:</label>
+            <input type="file" name="image" id="image" class="form-control"><br>
+        </div>
+        <div class="row">
+        <div class="col4 col-md-4">
+        <label for="price" class="form-label">Price:</label>
+        <input type="number" name="price" id="price" class="form-control" required><br>
+        </div>
+        <div class="col8 col-md-8">
+        <label for="country" class="form-label">Country:</label>
+        <input type="text" name="country" id="country" class="form-control" required placeholder="India"><br>
+        </div>
+        </div>
+        <div>
+        <label for="location" class="form-label">Location:</label>
+        <input type="text" name="location" id="location" class="form-control" required><br>
+        </div>
     </form>
+</body>
+<br><br>
+        <button type="submit" class=" add-btn">Create Listing</button>
+    </form>
+      </div>
+    </div>
 </body>

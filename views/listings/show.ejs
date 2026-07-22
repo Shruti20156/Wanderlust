@@ -1,15 +1,52 @@
 <% layout('layouts/boilerplate') %>
 <body>
-    <h3>Listing Details</h3>
-    <ul>
-        <li>Title: <%= listing.title %></li>
-        <li>Description: <%= listing.description %></li>
-        <li>Price: &#8377; <%= listing.price ? Number(listing.price).toLocaleString('en-IN') : 'N/A' %></li>
-        <li>Location: <%= listing.location %></li>
-        <li>Country: <%= listing.country %></li>
-    </ul>
-    <a href="/listings/<%= listing._id %>/edit">Edit</a>
-    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" style="display: inline;">
-        <button type="submit">Delete</button>
-    </form>
+  <div class="row justify-content-center my-5">
+    <div class="col-xl-8 col-lg-9">
+      <div class="card listing-show-card">
+        <div class="row g-0">
+          <div class="col-md-5">
+            <img src="<%= listing.image %>" class="img-fluid show-img" alt="<%= listing.title %>">
+          </div>
+          <div class="col-md-7">
+            <div class="card-body py-4 px-4 px-md-5">
+              <div class="d-flex justify-content-between align-items-start mb-4 gap-3 flex-column flex-xl-row">
+                <div>
+                  <h2 class="card-title mb-2"><%= listing.title %></h2>
+                  <p class="text-muted mb-0"><i class="fa-solid fa-location-dot"></i> <%= listing.location %>, <%= listing.country %></p>
+                </div>
+                <div class="text-xl-end">
+                  <div class="price-display">₹ <%= listing.price.toLocaleString('en-IN') %></div>
+                  <p class="text-muted small mb-0">Price</p>
+                </div>
+              </div>
+              <hr>
+              <h5 class="fw-semibold mb-3">Property Overview</h5>
+              <p class="text-secondary mb-4"><%= listing.description %></p>
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <p class="text-muted small mb-1">Country</p>
+                  <p class="mb-0 fw-semibold"><%= listing.country %></p>
+                </div>
+                <div class="col-sm-6">
+                  <p class="text-muted small mb-1">Location</p>
+                  <p class="mb-0 fw-semibold"><%= listing.location %></p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer bg-white border-top-0 px-4 px-md-5 py-4 d-flex flex-column flex-sm-row justify-content-between gap-2">
+              <a href="/listings" class="btn btn-outline-dark">
+                <i class="fa-solid fa-arrow-left"></i> Back to Listings
+              </a>
+              <div class="d-flex gap-2 flex-wrap justify-content-end">
+                <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark">Edit</a>
+                <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="m-0">
+                  <button type="submit" class="btn btn-outline-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
