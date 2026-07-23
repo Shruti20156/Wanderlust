@@ -14,7 +14,7 @@
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Image:</label>
-            <input type="file" name="image" id="image" class="form-control" required<%= listing.image ? 'value="' + listing.image + '"' : '' %>><br>
+            <input type="text" name="image" id="image" class="form-control" value="<%= listing.image %>" required><br>
         </div>
         <div class="row">
         <div class="col4 col-md-4">
