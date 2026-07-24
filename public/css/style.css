@@ -96,6 +96,24 @@ object-fit:cover;
 .card-footer .btn {
     min-width: 135px;
 }
+.auth-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 1rem 2rem rgba(17, 24, 39, 0.08);
+}
+.auth-btn {
+    background-color: #fe424d !important;
+    border: none !important;
+    color: #fff !important;
+}
+.auth-btn:hover {
+    background-color: #e23840 !important;
+}
+.auth-card .form-control:focus {
+    border-color: #fe424d;
+    box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.2);
+}
 @media (max-width: 768px) {
     .listing-show-card {
         box-shadow: 0 1rem 2rem rgba(17, 24, 39, 0.06);

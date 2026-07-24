@@ -10,6 +10,15 @@ const wrapAsync = require('./utils/wrapAsync');
 const ExpressError = require('./utils/ExpressError');
 const { listingSchema, ReviewSchema } = require('./schema');
 const Review = require('./models/review');
+const listings = require('./routes/listing');
+const reviewRoutes = require('./routes/review');
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const localStrategy = require('passport-local');
+const User = require('./models/user');
+const userRoutes = require('./routes/user');
+
 app.engine('ejs', ejsMate);
 app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
@@ -31,9 +40,43 @@ async function main() {
     await mongoose.connect(dbURI); 
 }
 
+const sessionOptions = {
+  secret: 'thisshouldbeabettersecret!',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+  },
+};
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use(passport.initialize());//middleware to initialize passport
+app.use(passport.session());//middleware to use passport sessions
+passport.use(new localStrategy(User.authenticate()));//use the authenticate method from passport-local-mongoose to handle authentication
+passport.serializeUser(User.serializeUser());//serialize user into the session
+passport.deserializeUser(User.deserializeUser());//deserialize user from the session
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
+app.use((req, res, next) => {
+  const successMsgs = req.flash('success');
+  const errorMsgs = req.flash('error');
+  res.locals.success = successMsgs && successMsgs.length ? successMsgs[0] : null;
+  res.locals.error = errorMsgs && errorMsgs.length ? errorMsgs[0] : null;
+  next();
+});
+
+app.use('/', userRoutes);
+app.use('/listings', listings);
+app.use('/listings/:id/reviews', reviewRoutes);
 
 const validateListing = (req, res, next) => {
   const { error } = listingSchema.validate(req.body);
@@ -52,73 +95,11 @@ const validateReview = (req, res, next) => {
   next();
 };
 
-app.get('/listings', wrapAsync(async (req, res) => {
-  try {
-    const listings = await Listing.find();
-    res.render('listings/index', { listings });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}));
-
-app.get('/listings/new', (req, res) => {
-  res.render('listings/new');
-});
-//show route for individual listing
-app.get('/listings/:id', wrapAsync(async (req, res) => {
-  try {
-    const listing = await Listing.findById(req.params.id).populate('reviews');
-    res.render('listings/show', { listing });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}));
-//create route for new listing
-app.post('/listings', validateListing, wrapAsync(async (req, res) => {
-  const newListing = new Listing(req.body);
-  await newListing.save();
-  res.redirect('/listings');
-}));
-//edit route for individual listing
-app.get('/listings/:id/edit', wrapAsync(async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
-  res.render('listings/edit', { listing });
-}));
-
-//update route for individual listing
-app.put('/listings/:id', validateListing, wrapAsync(async (req, res) => {
-  const updatedListing = await Listing.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.redirect(`/listings/${updatedListing._id}`);
-}));
-
-//delete route for individual listing
-app.delete('/listings/:id', wrapAsync(async (req, res) => {
-  await Listing.findByIdAndDelete(req.params.id);
-  res.redirect('/listings');
-}));
-
-//reviews routes
-app.post('/listings/:id/reviews', validateReview, wrapAsync(async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
-  const { rating, comment } = req.body;
-  const newReview = new Review({ rating, comment });
-  listing.reviews.push(newReview);
-  await newReview.save();
-  await listing.save();
-  res.redirect(`/listings/${listing._id}`);
-}));
-
-app.delete('/listings/:id/reviews/:reviewId', wrapAsync(async (req, res) => {
-  const { id, reviewId } = req.params;
-  await Review.findByIdAndDelete(reviewId);
-  await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  res.redirect(`/listings/${id}`);
-}));
 
 app.use((err, req, res, next) => {
-  let{statusCode , message} = err;
-  res.render('error', {statusCode, message});
-  // res.status(statusCode || 500).send(message || 'Something went wrong');
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Something went wrong';
+  res.status(statusCode).render('error', { statusCode, message });
 });
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
