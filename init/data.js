@@ -7,6 +7,7 @@ const sampleListings = [
     price: 1500,
     location: "Malibu",
     country: "United States",
+    owner: ObjectId('6a63a796c6e545c1c0cfed33'),
   },
   {
     title: "Modern Loft in Downtown",
@@ -16,6 +17,8 @@ const sampleListings = [
     price: 1200,
     location: "New York City",
     country: "United States",
+     owner: ObjectId('6a63a796c6e545c1c0cfed33'),
+
   },
   {
     title: "Mountain Retreat",
@@ -25,6 +28,7 @@ const sampleListings = [
     price: 1000,
     location: "Aspen",
     country: "United States",
+     owner: ObjectId('6a63a796c6e545c1c0cfed33'),
   },
   {
     title: "Historic Villa in Tuscany",
@@ -34,6 +38,7 @@ const sampleListings = [
     price: 2500,
     location: "Florence",
     country: "Italy",
+     owner: ObjectId('6a63a796c6e545c1c0cfed33'),
   },
   {
     title: "Secluded Treehouse Getaway",
@@ -43,6 +48,7 @@ const sampleListings = [
     price: 800,
     location: "Portland",
     country: "United States",
+     owner: ObjectId('6a63a796c6e545c1c0cfed33'),
   },
   {
     title: "Beachfront Paradise",
@@ -52,6 +58,7 @@ const sampleListings = [
     price: 2000,
     location: "Cancun",
     country: "Mexico",
+     owner: ObjectId('6a63a796c6e545c1c0cfed33'),
   },
   {
     title: "Rustic Cabin by the Lake",
@@ -61,6 +68,7 @@ const sampleListings = [
     price: 900,
     location: "Lake Tahoe",
     country: "United States",
+     owner: ObjectId('6a63a796c6e545c1c0cfed33'),
   },
   {
     title: "Luxury Penthouse with City Views",
@@ -70,6 +78,7 @@ const sampleListings = [
     price: 3500,
     location: "Los Angeles",
     country: "United States",
+     owner: ObjectId('6a63a796c6e545c1c0cfed33'),
   },
 ];
 

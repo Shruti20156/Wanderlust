@@ -1,3 +1,6 @@
+require('dotenv').config()
+console.log(process.env.HELLO);
+
 const express = require('express');
 const app = express();
 const port = 3000;

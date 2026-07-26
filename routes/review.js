@@ -6,7 +6,7 @@ const Listing = require('../models/listing');
 const Review = require('../models/review');
 const { ReviewSchema } = require('../schema');
 const ExpressError = require('../utils/ExpressError');
-
+const reviewcontroller=require("../controllers/review");
 const validateReview = (req, res, next) => {
   const { error } = ReviewSchema.validate(req.body);
   if (error) {
@@ -15,24 +15,35 @@ const validateReview = (req, res, next) => {
   next();
 };
 
-// reviews routes (mounted at /listings/:id/reviews)
-router.post('/', validateReview, wrapAsync(async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
-  const { rating, comment } = req.body;
-  const newReview = new Review({ rating, comment });
-  listing.reviews.push(newReview);
-  await newReview.save();
-  await listing.save();
-  req.flash('success', 'Successfully added a new review!');
-  res.redirect(`/listings/${listing._id}`);
-}));
+const isLoggedIn = (req, res, next) => {
+  if (!req.user) {
+    req.flash('error', 'You must be signed in to leave a review.');
+    return res.redirect('/login');
+  }
+  next();
+};
 
-router.delete('/:reviewId', wrapAsync(async (req, res) => {
+const isReviewAuthor = wrapAsync(async (req, res, next) => {
   const { id, reviewId } = req.params;
-  await Review.findByIdAndDelete(reviewId);
-  await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  req.flash('success', 'Successfully deleted the review!');
-  res.redirect(`/listings/${id}`);
-}));
+  const review = await Review.findById(reviewId);
+  const listing = await Listing.findById(id);
+  if (!review || !listing) {
+    req.flash('error', 'Review or listing not found.');
+    return res.redirect(`/listings/${id}`);
+  }
 
+  const isAuthor = review.author && review.author.equals(req.user._id);
+  const isListingOwner = listing.owner && listing.owner.equals(req.user._id);
+
+  if (!isAuthor && !isListingOwner) {
+    req.flash('error', 'You do not have permission to delete this review.');
+    return res.redirect(`/listings/${id}`);
+  }
+  next();
+});
+
+// reviews routes (mounted at /listings/:id/reviews)
+router.post('/', isLoggedIn, validateReview, wrapAsync(reviewcontroller.create));
+
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor, wrapAsync(reviewcontroller.delete));
 module.exports = router;

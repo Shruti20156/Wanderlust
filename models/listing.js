@@ -8,9 +8,8 @@ const listingSchema=new Schema({
     },
     description:String,
     image:{
-        type:String,
-        default:"https://img.freepik.com/free-photo/woman-beach-with-her-baby-enjoying-sunset_52683-144131.jpg?size=626&ext=jpg",
-        set:(v)=>v===""?"https://img.freepik.com/free-photo/woman-beach-with-her-baby-enjoying-sunset_52683-144131.jpg?size=626&ext=jpg":v,
+       url:String,
+       filename:String,
     },
     price:Number,
     location:String,
@@ -18,8 +17,13 @@ const listingSchema=new Schema({
     reviews:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Review'
-    }]
-}); 
+    }],
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:"User",
+        default:null,
+    },
+}, { strictPopulate: false }); 
 
 listingSchema.post('findOneAndDelete', async function(doc) {
     if (doc) {

@@ -6,7 +6,8 @@
         <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
         <% for(const listing of listings) { %>
             <div class="card col" style="width: 18rem;">
-  <img src="<%= listing.image %>" class="card-img-top" alt="...">
+  <% const cardImage = listing.image?.url || listing.image || '/images/default-listing.jpg'; %>
+  <img src="<%= cardImage %>" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title"><%= listing.title %></h5>
     <p class="card-text"><%= listing.description %></p>
