@@ -1,8 +1,13 @@
 const Listing=require("../models/listing");
+const { geocodeLocation } = require('../utils/geocode');
+const { filterListingsByQuery } = require('../utils/search');
+
 module.exports.index=async (req, res) => {
   try {
-    const listings = await Listing.find();
-    res.render('listings/index', { listings });
+    const query = req.query.search || '';
+    const allListings = await Listing.find();
+    const listings = filterListingsByQuery(allListings, query);
+    res.render('listings/index', { listings, query });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -34,12 +39,15 @@ module.exports.create=async (req, res) => {
     ? { url: imageUrl, filename: req.file?.filename || 'uploaded-image' }
     : undefined;
 
+  const coordinates = await geocodeLocation(req.body.location);
+
   const listingData = {
     title: req.body.title,
     description: req.body.description,
     price: req.body.price,
     location: req.body.location,
     country: req.body.country,
+    coordinates: coordinates || [77.321, 19.1383],
     image: imageData,
     owner: req.user._id,
   };
@@ -58,12 +66,15 @@ module.exports.edit=async (req, res) => {
 };
 
 module.exports.update=async (req, res) => {
+  const coordinates = await geocodeLocation(req.body.location);
+
   const updateData = {
     title: req.body.title,
     description: req.body.description,
     price: req.body.price,
     location: req.body.location,
     country: req.body.country,
+    coordinates: coordinates || [77.321, 19.1383],
   };
   if (req.file?.path || req.file?.secure_url) {
     updateData.image = {

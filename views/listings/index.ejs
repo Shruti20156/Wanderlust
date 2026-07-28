@@ -1,20 +1,78 @@
 <% layout('layouts/boilerplate') %>
 <%=success %>
 
-<body>
-  
-        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
-        <% for(const listing of listings) { %>
-            <div class="card col" style="width: 18rem;">
-  <% const cardImage = listing.image?.url || listing.image || '/images/default-listing.jpg'; %>
-  <img src="<%= cardImage %>" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title"><%= listing.title %></h5>
-    <p class="card-text"><%= listing.description %></p>
-    <a href="/listings/<%= listing._id %>" class="btn btn-primary">View Details </a>
+<% if (query) { %>
+  <div class="alert alert-light border mb-4" role="status">
+    Showing results for “<%= query %>”.
+    <a href="/listings" class="ms-2">Clear search</a>
+  </div>
+<% } %>
+
+<div id="filters">
+  <div class="filter">
+    <i class="fa-solid fa-fire"></i>
+    <p class="mb-0">Trending</p>
+  </div>
+  <div class="filter">
+    <i class="fa-solid fa-bed"></i>
+    <p class="mb-0">Rooms</p>
+  </div>
+  <div class="filter">
+    <i class="fa-solid fa-archway"></i>
+    <p class="mb-0">Iconic Cities</p>
+  </div>
+  <div class="filter">
+    <i class="fa-solid fa-mountain"></i>
+    <p class="mb-0">Mountains</p>
+  </div>
+  <div class="filter">
+    <i class="fa-brands fa-fort-awesome"></i>
+    <p class="mb-0">Castles</p>
+  </div>
+  <div class="filter">
+    <i class="fa-solid fa-person-swimming"></i>
+    <p class="mb-0">Pools</p>
+  </div>
+  <div class="filter">
+    <i class="fa-solid fa-tractor"></i>
+    <p class="mb-0">Farms</p>
+  </div>
+  <div class="filter">
+    <i class="fa-solid fa-snowflake"></i>
+    <p class="mb-0">Arctic</p>
+  </div>
+  <div class="tax-toggle">
+    <div class="form-check-reverse form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+      <label class="form-check-label" for="switchCheckDefault">Display Taxes</label>
+    </div>
   </div>
 </div>
-        <% } %>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+  <% for (const listing of listings) { %>
+    <% const cardImage = listing.image?.url || listing.image || '/images/default-listing.jpg'; %>
+    <div class="col">
+      <div class="card h-100">
+        <img src="<%= cardImage %>" class="card-img-top" alt="<%= listing.title %>">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title fw-semibold"><%= listing.title %></h5>
+          <p class="text-muted mb-3"><%= listing.location %>, <%= listing.country %></p>
+          <div class="mt-auto d-flex justify-content-between align-items-center">
+            <span class="fw-semibold">₹ <%= listing.price.toLocaleString('en-IN') %>/night</span>
+            <a href="/listings/<%= listing._id %>" class="btn btn-outline-dark btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } %>
 </div>
-   
-</body>
+
+<script>
+  const taxSwitch = document.getElementById("switchCheckDefault");
+  if (taxSwitch) {
+    taxSwitch.addEventListener("click", () => {
+      console.log("Tax toggle clicked");
+    });
+  }
+</script>

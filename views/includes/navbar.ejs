@@ -1,17 +1,23 @@
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+<nav class="navbar navbar-expand-lg border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-regular fa-compass"></i></a>
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/listings">
+      <i class="fa-regular fa-compass"></i>
+      <span>StayVista</span>
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav me-auto">
-        <a class="nav-link active" aria-current="page" href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">Create Listing</a>
+        <a class="nav-link" href="/listings">Explore</a>
+        <a class="nav-link" href="/listings/new">Create new Listing</a>
       </div>
-      <div class="navbar-nav">
+      <div class="navbar-nav align-items-lg-center gap-2">
+        <form class="d-flex" role="search" action="/listings" method="GET">
+          <input class="form-control form-control-sm" type="search" name="search" placeholder="Search listings" aria-label="Search listings" value="<%= typeof query !== 'undefined' ? query : '' %>">
+          <button class="btn btn-outline-dark btn-sm" type="submit">Search</button>
+        </form>
         <% if (currentUser) { %>
           <span class="navbar-text me-3">Hello, <%= currentUser.username %></span>
           <a class="nav-link" href="/logout">Log Out</a>

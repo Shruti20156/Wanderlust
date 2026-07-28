@@ -14,6 +14,10 @@ const listingSchema=new Schema({
     price:Number,
     location:String,
     country:String,
+    coordinates: {
+        type: [Number],
+        default: [77.321, 19.1383],
+    },
     reviews:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Review'

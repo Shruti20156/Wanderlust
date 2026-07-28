@@ -1,40 +1,40 @@
 <% layout('layouts/boilerplate') %>
-<body>
-   
-    <div class="row">
-        <div class="col-8 offset-2">
-
-      
-    <form action="/listings" method="POST" enctype="multipart/form-data" novalidate class="needs-validation">
-         <h4>Create a New Listing</h4>
-        <div>
-        <label for="title" class="form-label">Title:</label>
-        <input type="text" name="title" id="title" class="form-control" required><br>
-        <div>
-        <label for="description" class="form-label">Description:</label>
-        <textarea name="description" id="description" class="form-control" required></textarea><br>
-        </div>
-        <div>
-            <label for="image" class="form-label">Image:</label>
-            <input type="file" name="image" id="image" class="form-control" placeholder="Image URL" required><br>
-        </div>
-        <div class="row">
-        <div class="col4 col-md-4">
-        <label for="price" class="form-label">Price:</label>
-        <input type="number" name="price" id="price" class="form-control" required><br>
-        </div>
-        <div class="col8 col-md-8">
-        <label for="country" class="form-label">Country:</label>
-        <input type="text" name="country" id="country" class="form-control" required placeholder="India"><br>
-        </div>
-        </div>
-        <div>
-        <label for="location" class="form-label">Location:</label>
-        <input type="text" name="location" id="location" class="form-control" required><br>
-        </div>
-        <button type="submit" class="add-btn">Create Listing</button>
-    </form>
-</body>
+<div class="row justify-content-center my-4">
+  <div class="col-lg-8">
+    <div class="auth-card">
+      <div class="mb-4">
+        <h2 class="mb-1">Create a New Listing</h2>
+        <p class="text-muted mb-0">Present your property with a polished description and clear details.</p>
       </div>
+      <form action="/listings" method="POST" enctype="multipart/form-data" novalidate class="needs-validation form-panel">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" name="title" id="title" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea name="description" id="description" class="form-control" rows="4" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Image</label>
+          <input type="file" name="image" id="image" class="form-control" required>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" name="price" id="price" class="form-control" required>
+          </div>
+          <div class="col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" name="country" id="country" class="form-control" required placeholder="India">
+          </div>
+        </div>
+        <div class="mt-3">
+          <label for="location" class="form-label">Location</label>
+          <input type="text" name="location" id="location" class="form-control" required>
+        </div>
+        <button type="submit" class="add-btn mt-4">Create Listing</button>
+      </form>
     </div>
-</body>
+  </div>
+</div>

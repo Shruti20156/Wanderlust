@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-  <div id="map" style="height: 400px; margin-bottom: 2rem;"></div>
+  <div id="map" style="height: 400px; margin-bottom: 2rem;" data-latitude="<%= listing.coordinates?.[1] ?? 19.1383 %>" data-longitude="<%= listing.coordinates?.[0] ?? 77.321 %>" data-title="<%= listing.title %>"></div>
   <div>
     <% if (currentUser) { %>
       <form action="/listings/<%= listing._id %>/reviews" method="POST" class="review-form needs-validation" novalidate>
@@ -110,4 +110,4 @@
     </div>
   </div>
   <script src="/js/map.js"></script>
-</body>
+

@@ -1,5 +1,5 @@
 require('dotenv').config()
-console.log(process.env.HELLO);
+console.log(process.env);
 
 const express = require('express');
 const app = express();
@@ -66,9 +66,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
 app.use((req, res, next) => {
   const successMsgs = req.flash('success');
   const errorMsgs = req.flash('error');
